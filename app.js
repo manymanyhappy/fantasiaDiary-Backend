@@ -28,7 +28,7 @@ app.use('/health-check', function (req, res, next) {
   });
 });
 app.use('/user', userRouter);
-app.use('/users', myfantasiaRouter);
+app.use('/myfantasia', myfantasiaRouter);
 
 app.use(function(req, res, next) {
   next(createError(404), errorMessage.invalidUrl);
@@ -37,6 +37,8 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   res.locals.errorMessage = err.message || 'Internal Server Error';
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  res.cookie('jwt', null);
 
   const { status, message } = err;
 
