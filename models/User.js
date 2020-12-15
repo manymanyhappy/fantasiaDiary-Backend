@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  origin_diary: [{
+  fantasia_diary_list: [{
     type: mongoose.ObjectId,
     trim: true,
     ref: 'OriginalDiary'

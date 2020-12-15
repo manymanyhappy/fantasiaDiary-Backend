@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const originalDiarySchema = new mongoose.Schema({
   creator: {
-    type: mongoose.ObjectId,
+    type: String,
     unique: true,
     required: true,
     trim: true
   },
-  month: {
+  yearAndMonth: {
     type: String,
     required: true,
     trim: true
@@ -22,7 +22,7 @@ const originalDiarySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  fantasia_diary: {
+  fantasia_diary_id: {
     type: mongoose.ObjectId,
     trim: true,
     ref: 'FantasiaDiary'
