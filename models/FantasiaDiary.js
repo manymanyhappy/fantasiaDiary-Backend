@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const fantasiaDiarySchema = new mongoose.Schema({
   creator: {
     type: String,
-    unique: true,
     required: true,
     trim: true
   },
