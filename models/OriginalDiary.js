@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const originalDiarySchema = new mongoose.Schema({
   creator: {
     type: String,
-    unique: true,
     required: true,
     trim: true
   },
