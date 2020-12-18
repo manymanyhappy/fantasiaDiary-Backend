@@ -1,6 +1,7 @@
 const mecab = require('mecab-ya');
 const puppeteer = require('puppeteer');
 
+const User = require('../../models/User');
 const OriginalDiary = require('../../models/OriginalDiary');
 const FantasiaDiary = require('../../models/FantasiaDiary');
 
@@ -8,12 +9,23 @@ const { statusMessage } = require('../../constants/statusMessage');
 const { sentimentAnalysis } = require('../../config/googleCNL');
 
 exports.saveOriginalDiary = async function saveOriginalDiary(req, res, next) {
-  const { data : originalDiaryData } = req.body;  // 레퍼런스 111
-  // const newOriginalDiary = await OriginalDiary.create(originalDiaryData); // new Originaldiary 생성
+  const {
+    data : originalDiaryData,
+    fantasiaDiaryItem: fantasiaDiaryText
+  } = req.body;  // 레퍼런스 111
+  const { creator } = req.body.data;
 
-  const fantasiaDiary = originalDiaryData.details; // 일기 원문, 레퍼런스 222
+  const newOriginalDiary = await OriginalDiary.create(originalDiaryData); // new Originaldiary 생성
+  const { _id : newDiaryId } = newOriginalDiary;
+
+  await User.findByIdAndUpdate(
+    creator,
+    { $addToSet: { original_diary_list: newDiaryId } }
+  );
+
+  // const fantasiaDiary = fantasiaDiaryText.details; // 일기 원문, 레퍼런스 222
   // 이 상태 그대로 db에 저장(객체상태) => frontend로 보내서 convertFromRow
-  const { blocks } = fantasiaDiary; // 레퍼런스 333
+  const { blocks } = fantasiaDiaryText; // 레퍼런스 333
 
   let index = 0;
   let jdex = 0;
@@ -60,7 +72,7 @@ exports.saveOriginalDiary = async function saveOriginalDiary(req, res, next) {
   function classifyWordForCrawling(result, jdex) {
     console.log('result', result);
     const negativePhrase = ['안', '못'];
-    const endingPhrase = ['EP', 'EC', 'EF', 'ETM', 'NNG'];
+    const endingPhrase = ['EP', 'EC', 'EF', 'ETM', 'NNG', 'NNP'];
     const predicate = ['VV', 'VA', 'NNG', 'XR'];
 
     for (let i = 0; i < result.length; i++) {
@@ -163,7 +175,7 @@ exports.saveOriginalDiary = async function saveOriginalDiary(req, res, next) {
     changeOriginalDiaryIntoFantasiaDiary();
   }
 
-  function changeOriginalDiaryIntoFantasiaDiary() {
+  async function changeOriginalDiaryIntoFantasiaDiary() {
     // replace 하기
     console.log('changedWords', changedWords);
     let diaryDocument = '';
@@ -172,58 +184,124 @@ exports.saveOriginalDiary = async function saveOriginalDiary(req, res, next) {
       diaryDocument = `${diaryDocument}/${item}`;
     });
 
+    const diarySentimentData = await getSentimentScore(diaryDocument);
+
     for (const item in changedWords) {
-      if (diaryDocument.includes(item)) {
-        diaryDocument = diaryDocument.replace(item, changedWords[item]);
+      if (changedWords[item].includes('VV')) { // '안'
+        diaryDocument = diaryDocument.replace(item, `안 ${item}`);
+
+        changedWords[item] = 'changed'; // null 과 undefined는 err를 던져서 다른 값을 인위적으로 설정해줌
+      }
+
+      if (changedWords[item].includes('VA')) { // '못'
+        diaryDocument = diaryDocument.replace(item, `못 ${item}`);
+
+        changedWords[item] = 'changed';
+      }
+
+     if (changedWords[item].includes('NNG')) { // NNG => 명사 이거나 다양하다 같은얘들....
+      if (item[item.length - 1] === '다') { // 노력하다, 노력하는
+        diaryDocument = diaryDocument.replace(item, `안 ${item}`);
+
+        changedWords[item] = 'changed';
+      } else {
+        changedWords[item] = item; // value 값에 'NNG'값을 key값으로 바꿔줌
+      }
+     }
+
+     if (changedWords[item].includes('NNP')) { // NNG => 명사 이거나 다양하다 같은얘들....
+      if (item[item.length - 1] === '다') {
+        diaryDocument = diaryDocument.replace(item, `안 ${item}`);
+
+        changedWords[item] = 'changed';
+      } else {
+        changedWords[item] = item; // value 값에 'NNG'값을 key값으로 바꿔줌
+      }
+     }
+
+     if (changedWords[item] !== 'changed') {
+      diaryDocument = diaryDocument.replace(item, changedWords[item]);
+     }
+    }
+
+    diaryDocument = diaryDocument.split('/').slice(1); // diaryDocument 맨 앞에 /(슬래쉬) 없애야함
+console.log('diaryDocument', diaryDocument);
+
+    saveFantasiaDiary(diaryDocument, diarySentimentData);
+
+    return;
+  }
+
+  async function getSentimentScore(entireDiary) {
+    console.log('entireDiary', entireDiary);
+    const sentimentAverage = await sentimentAnalysis(entireDiary);
+    const sentimentColor = getFantasiaColor(sentimentAverage);
+
+    function getFantasiaColor(sentimentAverage) {
+      const positiveColor = '#C9463D';
+      const neutralColor = '#A4CFBE';
+      const negativeColor = '#A67D65';
+
+      if (sentimentAverage < -0.25) {
+        return negativeColor;
+      }
+
+      if (sentimentAverage < 0.25) {
+        return neutralColor;
+      }
+
+      if (sentimentAverage < 1) {
+        return positiveColor;
       }
     }
 
-    console.log('diaryDocument', diaryDocument);
+    return [sentimentAverage, sentimentColor];
   }
 
+  async function saveFantasiaDiary(fantasiaDiarySentences, diarySentimentData) {
+    console.log('diarySentimentData', diarySentimentData);
+    const [ average, color ] = diarySentimentData;
 
-  // const sentimentAverage = await sentimentAnalysis(diaryDocument);
-  // const fantasiaLevelColor = getFantasiaColor(sentimentAverage);
+    // diaryText 부정어 => 긍정어로 변환
+    for (let i = 0; i < blocks.length; i++) {
+      blocks[i].text = fantasiaDiarySentences[i]; //글이 달라지면 스타일 적용한것도 달라지는거 아닌가여?
+    }
 
-  // const getFantasiaColor = (sentimentAverage) => {
-  //   const positiveColor = 'pink';
-  //   const neutralColor = 'grey';
-  //   const negativeColor = 'black';
+    const fantasiaDiaryData = {
+      creator: originalDiaryData.creator,
+      details: JSON.stringify(fantasiaDiaryText),
+      sentiment_Average: average,
+      fantasia_level_color: color
+    };
+    console.log('fantasiaDiaryData', fantasiaDiaryData.details);
+    try {
+      const newFantasiaDiary = await FantasiaDiary.create(fantasiaDiaryData);
 
-  //   if (sentimentAverage < -0.25) {
-  //     return negativeColor;
-  //   }
+      await OriginalDiary.findByIdAndUpdate(
+        newDiaryId,
+        { $addToSet: { fantasia_diary_id: newFantasiaDiary._id } }
+      );
 
-  //   if (sentimentAverage < 0.25) {
-  //     return neutralColor;
-  //   }
+      return res.status(200).json({
+        result: statusMessage.success
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+};
 
-  //   if (sentimentAverage < 1) {
-  //     return positiveColor;
-  //   }
-  // };
+exports.getDiaryListForRequestedMonth = async function (req, res, next) {
+  try {
+    const { year, month } = req.query;
 
+    const requestDiaryList = await OriginalDiary.find({ yearAndMonth: `${year}-${month}`})
+                                                .populate('fantasia_diary_id');
 
-  // diaryText 부정어 => 긍정어로 변환
-
-  // for (let i = 0; i < blocks.length; i++) {
-  //   blocks[i].text = positiveDiaryText[i]; //글이 달라지면 스타일 적용한것도 달라지는거 아닌가여?
-  // }
-
-  // const fantasiaDiaryData = {
-  //   creator: originalDiaryData.creator,
-  //   details: fantasiaDiary,
-  //   sentiment_Average: sentimentAverage,
-  //   fantasia_level_color: fantasiaLevelColor
-  // };
-
-  // const newFantasiaDiary = await FantasiaDiary.create(fantasiaDiaryData);
-  // await OriginalDiary.findByIdAndUpdate({ fantasia_diary_id: newFantasiaDiary._id });
-
-  // return res.status(200).json({
-  //   result: statusMessage.success
-  // });
-  // } catch (err) {
-  //   next(err);
-  // }
+    return res.status(200).json({
+      diaryList: requestDiaryList
+    });
+  } catch (err) {
+    next(err);
+  }
 };

@@ -6,19 +6,12 @@ const myfantasiaController = require('./controllers/myfantasiaController');
 
 router.get('/',
   verifyToken,
-);
-
-router.get('/:diaryId',
-  verifyToken,
+  myfantasiaController.getDiaryListForRequestedMonth
 );
 
 router.post('/new',
   verifyToken,
   myfantasiaController.saveOriginalDiary
-);
-
-router.delete('/delete',
-  verifyToken,
 );
 
 module.exports = router;
