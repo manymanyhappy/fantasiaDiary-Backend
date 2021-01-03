@@ -1,27 +1,20 @@
 # 📝 환상의 일기장
 <img src='https://drive.google.com/uc?id=1lgYcx0JFAwDzvjLc8DZzCFjtWjjIDsiA' alt='thumbnail'>
-</br>
-</br>
 
 - 하루를 기록할 수 있는 웹 일기장입니다.
 - 일기장에 담긴 감정을 구글 자연어 API로 분석하고, 감정을 시각화 할 수 있습니다.
 - 하루의 일기장을 반대 말로 바꾸어, 환상의 일기장과 현실일기장을 제공합니다.
 
-</br>
-
 ## 🌱 Link
-***
+
 - Frontend Repoistory
 [https://github.com/manymanyhappy/fantasiaDiary-Frontend](https://github.com/manymanyhappy/fantasiaDiary-Frontend)
-
 
 - Backend Repository
 [https://github.com/manymanyhappy/fantasiaDiary-Backend](https://github.com/manymanyhappy/fantasiaDiary-Backend)
 
-</br>
 
 ## 🏃‍♂️ How to run
-***
 
 1. Local 환경에서 실행 하기 위해선, 다음 사항이 필요합니다.  
 1-1. [Firebase API Key](https://firebase.google.com/)  
@@ -29,7 +22,6 @@
 1-3. [Google GNL API](https://cloud.google.com/natural-language/docs/reference/libraries?hl=ko#setting_up_authentication)  
 
 2. 1이 준비되었다면, 아래와 같이 설정해주세요.
-</br>
 
 ```
 * Frontend
@@ -88,22 +80,16 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 
 ```
 
-</br>
-
 ## 👀 프로젝트 동기
-***
 
 일기에는 좋은 일도, 나쁜 일도 모두 담깁니다.  
 그리고 형식에 구애 받지 않고, 내가 쓰고싶은 대로 쓸 수 있죠. 그렇다보면 자신의 진짜 ***'감정'*** 이 드러납니다.  
 
-
 그 감정들은 한 장 한 장에 담겨 한 권이 되고 한 권, 한 권이 쌓이지만,  
 결국엔 먼지가 쌓이고 다 살펴볼 수도 없게됩니다.
 
-
 제 동생이 초등학교 일기장을 27살이 될 동안 가지고 있었지만,  
 성인이 되고 한 번도 펼쳐보지 않은 것처럼요.  
-
 
 그래서 그 일기를 짐처럼 쌓아두고 있을 필요가 없는 ***온라인 일기장*** 을 만들고 싶었습니다.  
 거기에 한 장 한 장 살펴 보지 않아도, 그 안 에 담긴 감정들을 ***시각화*** 해서 보여주면 재밌겠다고 생각했습니다.  
@@ -111,9 +97,7 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 
 그러던 중 멘토님이
 
-
 ***'일기의 내용을 반대로 바꿔서 보여주는 건 어떨까요?'***
-
 
 라는 아이디어를 던져주셨습니다.
 
@@ -121,11 +105,8 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 이렇게 저의 두 번째 프로젝트,  
 환상의 일기장이 시작되었습니다.
 
-
-</br>
-
 ## 🧩 STACK
-***
+
 | Frontend           | Frontend           |
 | :----------------: | :----------------: |
 | React              | Node.js            |
@@ -136,77 +117,46 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 | Date-Fns           | Puppeteer          |
 | ES2015+            |                    |
 
-</br>
-
 ## 🤓  프로젝트 설명
-***
-</br>
 
 ### 1. 일기는 미루면 의미가 없습니다.
-</br>
 
 <img src='https://drive.google.com/uc?id=1SbfYNx45wk2Ro0PueMIaWvpVBKdQqnSb' alt='writeDiary'>
-
-</br>
-</br>
 
 방학 때, 일기 쓰기를 미루었다가 개학 전날 한 꺼번에 쓴 경험 있으시죠?  
 환상의 일기는 매일 딱 한 번 기록할 수 있습니다. 일기는 그 날의 감정에 충실해야하니깐요!
 
-</br>
-
 ### 2. 일기 속 감정을 "색"으로 달력에 시각화하고 그래프로 볼 수 있습니다.
-</br>
 
 <img src='https://drive.google.com/uc?id=1Nhtr-xhX829_UlKiHUSVcyh1etetQQ7x' alt='calendar'>
 <img src='https://drive.google.com/uc?id=1K2vEsdPa-nrKNHfLHjjDMqaKe8KE9924' alt='d3graph'>
 
-</br>
-</br>
-
 내가 쓴 일기를 구글 자연어 API가 분석하고, 그 수치에 따라  달력에 색으로 표기됩니다.  
 그 달에 내가 어떤 감정을 느꼈는지 달력에서 한 눈에 확인 할 수 있습니다. 그리고 그래프로도 확인할 수 있습니다.
 
-</br>
-
 ### 3. 내가 쓴 일기를 반대로 기록한 "환상의 일기"를 경험하세요!
-</br>
 
 <img src='https://drive.google.com/uc?id=1vha1F6ik_Pa93oU65D6fJOHNphPxze4a' alt='calendar'>
 <img src='https://drive.google.com/uc?id=1SIsOo0aFfYiXX3DEznUUN6hSOyhzl8Z_' alt='d3graph'>
 <img src='https://drive.google.com/uc?id=1sa-uoSWYBfR1ZAzmGZE_pMGc1CD7W-DN' alt='d3graph'>
 
-</br>
-</br>
-
-기분이 나쁜 날 쓴 일기는 다음에 봐도 그 기분이 살아나잖아요?  
-그럴 땐, 반대말로 쓰여진 환상의 일기를 보고, 어처구니없어서 웃어보시는거 어떨까요?
-
-</br>
+기분이 나쁜 날 쓴 일기는 다음에 봐도 그 기분이 살아나잖아요?   
+그럴 땐, 반대말로 쓰여진 환상의 일기를 보고, 어처구니없어서 웃어보시는거 어떨까요?   
 
 ## 📆  작업기간
-***
-</br>
 
 ### 🔥 아이디어 브레인 스토밍 및 기술 스택 서치(11월 30일 ~ 12월 5일 (1주))
 
-</br>
 아이디어 브레인 스토밍  
 
 11월 30일 ~ 12월 2일(3일)  
-</br>
 
 기술 스택 서치  
 12월 3일 ~ 12월 5일 (3일)
 
-</br>
-
 ### 🌪 개발 (12월 6일 ~ 12월 19일 (2주))
 
-</br>
-
 ## ✂️ 아이디어 변천사
-***
 
 - **초기**
 1. 일기장을 만들고 싶다.
@@ -224,25 +174,18 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 </br>
 
 ## 🌺 MOCK UP VS 최종본
-***
-</br>
+
 <img src='https://drive.google.com/uc?id=1XzXfnPzvvC-uFp8D3yj28Wf15cBpAWYT' alt='compare'>  
 
-</br>
-</br>
-
 ## 🏆 스스로 내리는 환상의 일기장 총 평
-***
 
-***환상의 일기장. . .~~환장~~이 될 뻔 하다.***  
-
-</br>
+>
+> ***환상의 일기장. . .~~환장~~이 될 뻔 하다.***  
+>
 
 **🔥 서론**  
-</br>
 
 프로젝트가 끝나고 저는 환상의 일기장 부제를 지었습니다. 부제는 바로 환장의 일기장..입니다.  
-
 
 ***왜냐하면 기존의 계획한 것을 구현할 때마다 예기치 못한 문제에 봉착해,  
 새로운 기술과 아이디어를 접목시켜야했기 때문이죠.***
@@ -259,12 +202,11 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 하지만, 이 생각이 정말 단순하고, 단순한 생각이었음을 아주 빨리 깨닫게되었습니다.
 
 </br>
-
 ***
 </br>
 
 **🌪 본론 - Challenges 1**  
-</br>
+
 ```
 💡 텍스트를 데이터로 다루는 것은 제가 생각했던 것보다 훨씬 큰 분야였습니다.
 ```
@@ -276,8 +218,6 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 또한 한국어는 **교착어**라고 하는데요.  
 밑에 예시를 보시면 쉽게 이해하실 수 있습니다.  
 
-</br>
-
 ```
 나는 집에 간다.
 I go to my home.
@@ -285,8 +225,6 @@ I go to my home.
 나는 피자를 먹었다
 I eat pizza.
 ```
-
-</br>
 
 영어와 다르게 조사가 단어에 붙어있죠.  
 ***즉, 단순히 문장.split(' ')한다고 해서 해결될 문제가 아니었다. 이것입니다.....!***
