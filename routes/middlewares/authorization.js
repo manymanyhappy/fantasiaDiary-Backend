@@ -4,7 +4,7 @@ const { errorMessage } = require('../../constants/errorMessage');
 
 const YOUR_SECRET_KEY = process.env.SECRET_KEY;
 
-const verifyToken = (req, res, next) => {
+const verifyToken = function (req, res, next) {
   const { authorization } = req.headers;
 
   const token = authorization.split('Bearer')[1].trim();

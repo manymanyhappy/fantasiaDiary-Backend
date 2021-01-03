@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../../models/User');
 
-const UserService = require('../../services/UserService');
 const { errorMessage } = require('../../constants/errorMessage');
 const { statusMessage } = require('../../constants/statusMessage');
 

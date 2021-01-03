@@ -38,8 +38,6 @@ app.use(function(err, req, res, next) {
   res.locals.errorMessage = err.message || 'Internal Server Error';
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  res.cookie('jwt', null);
-
   const { status, message } = err;
 
   res.status(status || 500);
