@@ -14,7 +14,13 @@ exports.getDiaryListForRequestedMonth = async function (req, res, next) {
   try {
     const { year, month } = req.query;
 
-    const requestDiaryList = await OriginalDiary.find({ yearAndMonth: `${year}-${month}`})
+    let requestMonth = month;
+
+    if (month.length === 1) {
+      requestMonth = `0${requestMonth}`;
+    }
+
+    const requestDiaryList = await OriginalDiary.find({ yearAndMonth: `${year}-${requestMonth}`})
                                                 .populate('fantasia_diary_id');
 
     return res.status(200).json({
