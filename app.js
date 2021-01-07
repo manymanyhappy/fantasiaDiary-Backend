@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 app.use(cors({
-  origin: 'https://fantasia-diary.site',
+  origin: 'https://www.fantasia-diary.site',
   optionsSuccessStatus: 200
 }));
 
