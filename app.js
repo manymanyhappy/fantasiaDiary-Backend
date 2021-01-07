@@ -9,7 +9,10 @@ const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://fantasia-diary.site',
+  optionsSuccessStatus: 200
+}));
 
 const userRouter = require('./routes/user');
 const myfantasiaRouter = require('./routes/myfantasia');
