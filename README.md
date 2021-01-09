@@ -13,6 +13,8 @@
 - Backend Repository
 [https://github.com/manymanyhappy/fantasiaDiary-Backend](https://github.com/manymanyhappy/fantasiaDiary-Backend)
 
+- [환상의 일기장](https://www.fantasia-diary.site/)
+
 
 ## 🏃‍♂️ How to run
 
