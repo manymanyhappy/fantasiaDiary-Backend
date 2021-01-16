@@ -109,7 +109,7 @@ GOOGLE_APPLICATION_CREDENTIALS='credentials/<Your JSON Filename>'
 
 ## 🧩 STACK
 
-| Frontend           | Frontend           |
+| Frontend           | Bakcend           |
 | :----------------: | :----------------: |
 | React              | Node.js            |
 | Redux              | Express            |
